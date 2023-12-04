@@ -1,0 +1,51 @@
+name: Polling
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Restore JBang cache
+      id: cache-jbang-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          ~/.jbang
+        key: ${{ runner.os }}-jbang
+
+    - name: Restore reviews cache
+      id: cache-reviews-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          ./reviews/
+        key: ${{ runner.os }}-reviews
+
+    - name: Check reviews
+      env:
+        SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
+      run: |
+        ./jbang vscodeReviewsWatcher.java
+
+    - name: Save Cache
+      id: cache-reviews-save
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          ./reviews/
+        key: ${{ runner.os }}-reviews
+    
+    - name: Save Cache
+      id: cache-jbang-save
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          ~/.jbang
+        key: ${{ runner.os }}-jbang
