@@ -43,7 +43,7 @@ jobs:
       with:
         path: |
           ./reviews/
-        key: ${{ runner.os }}-reviews
+        key: ${{ steps.cache-reviews-restore.outputs.cache-primary-key }}
     
     - name: Save Cache
       id: cache-jbang-save
@@ -51,4 +51,4 @@ jobs:
       with:
         path: |
           ~/.jbang
-        key: ${{ runner.os }}-jbang
+        key: ${{ steps.cache-jbang-restore.outputs.cache-primary-key }}
