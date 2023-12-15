@@ -21,7 +21,10 @@ jobs:
       with:
         path: |
           ~/.jbang
-        key: ${{ runner.os }}-jbang-pPEqcqzabcxQWqKvWLXsJPKa2oapbb7
+        restore-keys: |
+          jbang-${{ hashFiles('**/*.java') }}
+          jbang-
+        key: jbang-${{ hashFiles('**/*.java') }}
 
     - name: Restore reviews cache
       id: cache-reviews-restore
@@ -29,7 +32,10 @@ jobs:
       with:
         path: |
           ./reviews/
-        key: ${{ runner.os }}-reviews-16dsjo3w6COWhgd0qLY8aOHStxhLWAx
+        restore-keys: |
+          reviews-${{ hashFiles('reviews/*.json') }}
+          reviews-
+        key: reviews-${{ hashFiles('reviews/*.json') }}
 
     - name: Check reviews
       env:
@@ -43,7 +49,7 @@ jobs:
       with:
         path: |
           ./reviews/
-        key: ${{ steps.cache-reviews-restore.outputs.cache-primary-key }}
+        key: reviews-${{ hashFiles('reviews/*.json') }}
     
     - name: Save Cache
       id: cache-jbang-save
@@ -51,4 +57,4 @@ jobs:
       with:
         path: |
           ~/.jbang
-        key: ${{ steps.cache-jbang-restore.outputs.cache-primary-key }}
+        key: jbang-${{ hashFiles('**/*.java') }}
