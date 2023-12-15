@@ -21,7 +21,7 @@ jobs:
       with:
         path: |
           ~/.jbang
-        key: ${{ runner.os }}-jbang
+        key: ${{ runner.os }}-jbang-pPEqcqzabcxQWqKvWLXsJPKa2oapbb7
 
     - name: Restore reviews cache
       id: cache-reviews-restore
@@ -29,7 +29,7 @@ jobs:
       with:
         path: |
           ./reviews/
-        key: ${{ runner.os }}-reviews
+        key: ${{ runner.os }}-reviews-16dsjo3w6COWhgd0qLY8aOHStxhLWAx
 
     - name: Check reviews
       env:
