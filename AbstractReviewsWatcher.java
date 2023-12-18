@@ -65,7 +65,7 @@ public abstract class AbstractReviewsWatcher {
 
             if (existingReviews == null) {
                 //Never saved before
-                //return;
+                return;
             }
 
             //Find new reviews
