@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.io.FileReader;
@@ -181,7 +182,8 @@ public class vscodeReviewsWatcher {
         properties.put("user", userDisplayName);
         String updatedDate = formatDate(review.get("updatedDate").getAsString());
         properties.put("date", updatedDate);
-        properties.put("review", review.get("text").getAsString());
+        String text = blockQuote(review.get("text").getAsString());
+        properties.put("review", text);
         String rating = getStarEmojis(review.get("rating").getAsInt());
         properties.put("rating", rating);
         System.out.println(userDisplayName + " gave " + rating + " to " + context.extensionId);
@@ -190,6 +192,12 @@ public class vscodeReviewsWatcher {
         return TrackMessage.builder("review")
                 .userId(userId)
                 .properties(properties);
+    }
+
+    private static String blockQuote(String text) {
+        return Arrays.stream(text.split("\n"))
+                .map(line -> "> " + line)
+                .collect(Collectors.joining("\n"));
     }
 
     // Helper method to make an HTTP GET request and return the response as a String
