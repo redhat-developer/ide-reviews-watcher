@@ -42,6 +42,7 @@ jobs:
         SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
       run: |
         ./jbang vscodeReviewsWatcher.java
+        ./jbang intellijReviewsWatcher.java
 
     - name: Save Cache
       id: cache-reviews-save
