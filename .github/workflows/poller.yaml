@@ -51,7 +51,7 @@ jobs:
         path: |
           ./reviews/
         key: reviews-${{ hashFiles('reviews/*.json') }}
-    
+
     - name: Save Cache
       id: cache-jbang-save
       uses: actions/cache/save@v3
@@ -59,3 +59,12 @@ jobs:
         path: |
           ~/.jbang
         key: jbang-${{ hashFiles('**/*.java') }}
+
+  # prevents GitHub from disabling scheduled workflows due to repository inactivity after 60 days
+  workflow-keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
