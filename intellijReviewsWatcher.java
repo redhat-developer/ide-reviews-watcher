@@ -1,20 +1,18 @@
-
 //DEPS com.google.code.gson:gson:2.10.1
 //DEPS com.segment.analytics.java:analytics:3.4.0
 //SOURCES AbstractReviewsWatcher.java
 //JAVA 17
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.io.IOException;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -24,7 +22,7 @@ import com.segment.analytics.messages.TrackMessage.Builder;
 
 public class intellijReviewsWatcher extends AbstractReviewsWatcher {
 
-    
+
     intellijReviewsWatcher(String publisherId) {
         super(publisherId);
     }
@@ -42,7 +40,7 @@ public class intellijReviewsWatcher extends AbstractReviewsWatcher {
                 return new Context(id);
             })
             .forEach(this::checkReviews);
-        
+
         analytics.shutdown();
         long elapsed = System.currentTimeMillis() - start;
         System.out.println("Done in "+elapsed+"ms");
@@ -141,7 +139,7 @@ public class intellijReviewsWatcher extends AbstractReviewsWatcher {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        
+
         JsonArray json = JsonParser.parseString(response.body()).getAsJsonArray();
         return json;
     }

@@ -26,7 +26,7 @@ public abstract class AbstractReviewsWatcher {
 
     protected Analytics analytics;
     protected String publisherId;
-    
+
     AbstractReviewsWatcher(String publisherId) {
         this.publisherId = publisherId;
         String segmentKey = System.getenv("SEGMENT_WRITE_KEY");
@@ -41,7 +41,6 @@ public abstract class AbstractReviewsWatcher {
                 throw new RuntimeException(e);
             }
         }
-        this.publisherId = publisherId;
     }
 
     static final Path reviewsPath = Path.of("reviews");
@@ -60,7 +59,7 @@ public abstract class AbstractReviewsWatcher {
             // Load previous reviews
             var existingReviews = loadExistingReviews(context);
 
-            // Save latest revews on disk
+            // Save latest reviews on disk
             save(context, latestReviews);
 
             if (existingReviews == null) {
@@ -96,7 +95,7 @@ public abstract class AbstractReviewsWatcher {
 
     protected void save(Context context, JsonArray lastestReviews) {
         Path filePath = getReviewFile(context);
-        Gson gson = new Gson();
+        var gson = new Gson();
         try (FileWriter writer = new FileWriter(filePath.toFile())) {
             gson.toJson(lastestReviews, writer);
             System.out.println("Data saved to " + filePath);
@@ -134,7 +133,7 @@ public abstract class AbstractReviewsWatcher {
     }
 
     protected String formatDate(String dateTime) {
-        Instant instant = Instant.parse(dateTime);
+        var instant = Instant.parse(dateTime);
         return formatter.format(instant);
     }
     protected String formatDate(Date date) {
@@ -152,10 +151,11 @@ public abstract class AbstractReviewsWatcher {
     // Helper method to get star emojis based on the rating value
     protected String getStarEmojis(double rating) {
         int fullStars = (int) rating;
-        if ( fullStars == 0) {
-            return "😡";
+        if (fullStars == 0) {
+            // No rating => neutral face
+            return "😐";
         }
-        StringBuilder stars = new StringBuilder();
+        var stars = new StringBuilder();
 
         // Full stars
         for (int i = 0; i < fullStars; i++) {

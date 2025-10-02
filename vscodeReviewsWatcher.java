@@ -1,4 +1,3 @@
-
 //DEPS com.google.code.gson:gson:2.10.1
 //DEPS com.segment.analytics.java:analytics:3.4.0
 //SOURCES AbstractReviewsWatcher.java
@@ -106,7 +105,7 @@ public class vscodeReviewsWatcher extends AbstractReviewsWatcher {
     JsonObject getPublisherData(String publisherId) throws IOException, InterruptedException {
         String api = "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery?api-version=6.0-preview.1";
         HttpClient httpClient = HttpClient.newHttpClient();
-        
+
         JsonObject requestPayload = createRequest(publisherId);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -117,7 +116,7 @@ public class vscodeReviewsWatcher extends AbstractReviewsWatcher {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        
+
         JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
         return json;
     }
